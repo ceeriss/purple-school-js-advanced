@@ -1,14 +1,16 @@
-const users = [
-  { id: 1, name: "Вася" },
-  { id: 2, name: "Петя" },
-  { id: 1, name: "Вася" },
-];
+function rollDice(diceType) {
+  // Извлекаем число из строки (убираем 'd')
+  const sides = parseInt(diceType.substring(1));
 
-// Используем Set для получения уникальных id
-const uniqueIds = [...new Set(users.map(user => user.id))];
+  // Генерируем случайное число от 1 до количества граней включительно
+  return Math.floor(Math.random() * sides) + 1;
+}
 
-// Используем find для нахождения первого объекта с каждым id
-const uniqueUsers = uniqueIds.map(id => users.find(user => user.id === id));
-
-console.log(uniqueUsers);
-// [{ id: 1, name: "Вася" }, { id: 2, name: "Петя" }]
+// Примеры использования:
+console.log(rollDice("d4")); // Случайное число от 1 до 4
+console.log(rollDice("d6")); // Случайное число от 1 до 6
+console.log(rollDice("d8")); // Случайное число от 1 до 8
+console.log(rollDice("d10")); // Случайное число от 1 до 10
+console.log(rollDice("d12")); // Случайное число от 1 до 12
+console.log(rollDice("d16")); // Случайное число от 1 до 16
+console.log(rollDice("d20")); // Случайное число от 1 до 20
