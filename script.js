@@ -1,16 +1,15 @@
-function rollDice(diceType) {
-  // Извлекаем число из строки (убираем 'd')
-  const sides = parseInt(diceType.substring(1));
+const now = new Date()
+const format = new Intl.DateTimeFormat(navigator.language).format(now);
 
-  // Генерируем случайное число от 1 до количества граней включительно
-  return Math.floor(Math.random() * sides) + 1;
+function checkAge(dateStr){
+	const date = new Date(dateStr)
+	const res = now.getFullYear() - date.getFullYear()
+	if (res >= 14){
+		return true
+	}
+	return false
 }
+console.log(checkAge("2001-01-01"));
 
-// Примеры использования:
-console.log(rollDice("d4")); // Случайное число от 1 до 4
-console.log(rollDice("d6")); // Случайное число от 1 до 6
-console.log(rollDice("d8")); // Случайное число от 1 до 8
-console.log(rollDice("d10")); // Случайное число от 1 до 10
-console.log(rollDice("d12")); // Случайное число от 1 до 12
-console.log(rollDice("d16")); // Случайное число от 1 до 16
-console.log(rollDice("d20")); // Случайное число от 1 до 20
+
+
