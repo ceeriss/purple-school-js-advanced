@@ -1,38 +1,32 @@
-// Находим элемент с классом 'test'
-const timerElement = document.querySelector(".test");
-
-function updateTimer() {
-  // Текущая дата и дата следующего Нового Года
-  const now = new Date();
-  const nextYear = now.getFullYear() + 1;
-  const newYear = new Date(nextYear, 0, 1);
-  const diff = newYear - now;
-
-  // Если Новый Год наступил
-  if (diff <= 0) {
-    timerElement.textContent = "🎉 С НОВЫМ ГОДОМ! 🎉";
-    return;
-  }
-
-  // Рассчитываем время
-  const totalSeconds = Math.floor(diff / 1000);
-  const totalMinutes = Math.floor(totalSeconds / 60);
-  const totalHours = Math.floor(totalMinutes / 60);
-  const totalDays = Math.floor(totalHours / 24);
-
-  const months = Math.floor(totalDays / 30);
-  const days = totalDays % 30;
-  const hours = totalHours % 24;
-  const minutes = totalMinutes % 60;
-  const seconds = totalSeconds % 60;
-
-  // Формируем строку в нужном формате
-  const timerString = `${months} месяцев, ${days} дней, ${hours} часов, ${minutes} минут, ${seconds} секунд`;
-
-  // Вставляем в элемент с классом 'test'
-  timerElement.innerHTML = timerString;
+const Persona = function (rasa, name, language,) {
+	this.rasa = rasa;
+	this.name = name;
+	this.language = language;
 }
 
-// Запускаем таймер
-updateTimer();
-setInterval(updateTimer, 1000);
+Persona.prototype.talk = function () {
+	return `Мое имя: ${this.name} и язык: ${this.language}`
+}
+const Ork = new Persona('Орк', 'Данила', 'Оркский')
+
+Ork.weapon = 'Секира'
+
+Ork.attack = function () {
+	return console.log('Удар!!!');
+	
+}
+console.log(Ork);
+Ork.attack()
+
+
+const Elf = new Persona('Эльф', 'Валерия', 'Эльфийский')
+
+Elf.magic = 'Заклинание любви'
+
+Elf.createSpell = function () {
+	return console.log('Я создала заклинание');
+	
+	
+}
+console.log(Elf);
+Elf.createSpell()
