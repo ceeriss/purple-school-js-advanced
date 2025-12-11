@@ -1,57 +1,39 @@
-// 1. Базовый класс Персонажа
-const Persona = function(rasa, name, language) {
-    this.rasa = rasa;
-    this.name = name;
-    this.language = language;
+class Car {
+    constructor(brand, model, initialMileage = 0) {
+        // Приватные свойства через замыкание
+        let _brand = brand;
+        let _model = model;
+        let _mileage = initialMileage;
+
+        // Валидация
+        if (typeof initialMileage !== 'number' || initialMileage < 0) {
+            throw new Error('Пробег должен быть неотрицательным числом');
+        }
+
+        // Геттер для пробега
+        Object.defineProperty(this, 'mileage', {
+            get: function() {
+                return _mileage;
+            },
+            set: function(newMileage) {
+                if (typeof newMileage !== 'number' || newMileage < 0) {
+                    throw new Error('Пробег должен быть неотрицательным числом');
+                }
+                if (newMileage < _mileage) {
+                    throw new Error('Новый пробег не может быть меньше текущего');
+                }
+                _mileage = newMileage;
+            },
+            enumerable: true,
+            configurable: false
+        });
+
+        // Метод info
+        this.info = function() {
+            console.log(`Марка: ${_brand}`);
+            console.log(`Модель: ${_model}`);
+            console.log(`Пробег: ${_mileage} км`);
+            console.log('---');
+        };
+    }
 }
-
-// Метод говорить - ВЫВОДИТ в консоль, а не возвращает
-Persona.prototype.talk = function() {
-    console.log(`Мое имя: ${this.name} и язык: ${this.language}`);
-}
-
-// 2. Класс Орка (наследуется от Persona)
-const Ork = function(name, language, weapon) {
-    // Вызываем конструктор родителя
-    Persona.call(this, 'Орк', name, language);
-    this.weapon = weapon;
-}
-
-// Настраиваем прототипное наследование
-Ork.prototype = Object.create(Persona.prototype);
-Ork.prototype.constructor = Ork;
-
-// Добавляем метод удара в прототип Орка
-Ork.prototype.attack = function() {
-    console.log(`${this.name} бьет ${this.weapon}ой! Удар!!!`);
-}
-
-// 3. Класс Эльфа (наследуется от Persona)
-const Elf = function(name, language, magic) {
-    // Вызываем конструктор родителя
-    Persona.call(this, 'Эльф', name, language);
-    this.magic = magic;
-}
-
-// Настраиваем прототипное наследование
-Elf.prototype = Object.create(Persona.prototype);
-Elf.prototype.constructor = Elf;
-
-// Добавляем метод создания заклинания в прототип Эльфа
-Elf.prototype.createSpell = function() {
-    console.log(`${this.name} создала заклинание: "${this.magic}"`);
-}
-
-// 4. ТЕПЕРЬ создаем экземпляры классов
-const ork = new Ork('Данила', 'Оркский', 'Секира');
-const elf = new Elf('Валерия', 'Эльфийский', 'Заклинание любви');
-
-console.log('=== Орк ===');
-ork.talk();      // Метод унаследован от Persona
-ork.attack();    // Собственный метод Орка
-console.log(ork); // Показывает все свойства
-
-console.log('\n=== Эльф ===');
-elf.talk();          // Метод унаследован от Persona
-elf.createSpell();   // Собственный метод Эльфа
-console.log(elf);    // Показывает все свойства
