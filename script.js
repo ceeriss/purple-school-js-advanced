@@ -1,39 +1,44 @@
-class Car {
-    constructor(brand, model, initialMileage = 0) {
-        // Приватные свойства через замыкание
-        let _brand = brand;
-        let _model = model;
-        let _mileage = initialMileage;
-
-        // Валидация
-        if (typeof initialMileage !== 'number' || initialMileage < 0) {
-            throw new Error('Пробег должен быть неотрицательным числом');
-        }
-
-        // Геттер для пробега
-        Object.defineProperty(this, 'mileage', {
-            get: function() {
-                return _mileage;
-            },
-            set: function(newMileage) {
-                if (typeof newMileage !== 'number' || newMileage < 0) {
-                    throw new Error('Пробег должен быть неотрицательным числом');
-                }
-                if (newMileage < _mileage) {
-                    throw new Error('Новый пробег не может быть меньше текущего');
-                }
-                _mileage = newMileage;
-            },
-            enumerable: true,
-            configurable: false
-        });
-
-        // Метод info
-        this.info = function() {
-            console.log(`Марка: ${_brand}`);
-            console.log(`Модель: ${_model}`);
-            console.log(`Пробег: ${_mileage} км`);
-            console.log('---');
-        };
-    }
+class Persona {
+  constructor(rasa, name, language) {
+    this.rasa = rasa;
+    this.name = name;
+    this.language = language;
+  }
+  talk() {
+    console.log(`Мое имя: ${this.name} и язык: ${this.language}`);
+  }
 }
+
+class Ork extends Persona {
+  constructor(name, rasa, language, weapon) {
+    super(rasa, name, language);  // порядок как в родителе
+    this.weapon = weapon;
+  }
+  attack() {
+    console.log(`${this.name} бьет ${this.weapon}ой! Удар!!!`);
+  }
+}
+
+class Elf extends Persona {  // добавлено extends
+  constructor(name, rasa, language, magic) {
+    super(rasa, name, language);  // порядок как в родителе
+    this.magic = magic;
+  }
+  createSpell() {
+    console.log(`${this.name} создала заклинание: "${this.magic}"`);
+  }
+}
+
+const ork = new Ork('Данила', 'Орк', 'Оркский', 'Секира');  // правильный порядок
+const elf = new Elf('Валерия', 'Эльф', 'Эльфийский', 'Заклинание любви');
+
+console.log('=== Орк ===');
+ork.talk();
+ork.attack();
+console.log(ork);
+
+console.log('\n=== Эльф ===');
+elf.talk();
+elf.createSpell();
+console.log(elf);
+
