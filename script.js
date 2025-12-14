@@ -17,6 +17,9 @@ class Ork extends Persona {
   attack() {
     console.log(`${this.name} бьет ${this.weapon}ой! Удар!!!`);
   }
+  talk(){
+    console.log(`Я ОРК оу оу`);
+  }
 }
 
 class Elf extends Persona {  // добавлено extends
@@ -26,6 +29,10 @@ class Elf extends Persona {  // добавлено extends
   }
   createSpell() {
     console.log(`${this.name} создала заклинание: "${this.magic}"`);
+  }
+  talk(){
+    console.log(`Я Эльф ЕС ЕС`);
+
   }
 }
 
