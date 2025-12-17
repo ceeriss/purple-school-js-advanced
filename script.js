@@ -1,51 +1,30 @@
-class Persona {
-  constructor(rasa, name, language) {
-    this.rasa = rasa;
-    this.name = name;
-    this.language = language;
-  }
-  talk() {
-    console.log(`Мое имя: ${this.name} и язык: ${this.language}`);
-  }
-}
+const request = new XMLHttpRequest()
 
-class Ork extends Persona {
-  constructor(name, rasa, language, weapon) {
-    super(rasa, name, language);  // порядок как в родителе
-    this.weapon = weapon;
-  }
-  attack() {
-    console.log(`${this.name} бьет ${this.weapon}ой! Удар!!!`);
-  }
-  talk(){
-    console.log(`Я ОРК оу оу`);
-  }
-}
+request.open('GET', 'https://pokeapi.co/api/v2/pokemon/ditto')
 
-class Elf extends Persona {  // добавлено extends
-  constructor(name, rasa, language, magic) {
-    super(rasa, name, language);  // порядок как в родителе
-    this.magic = magic;
-  }
-  createSpell() {
-    console.log(`${this.name} создала заклинание: "${this.magic}"`);
-  }
-  talk(){
-    console.log(`Я Эльф ЕС ЕС`);
+request.send()
 
-  }
-}
+request.addEventListener('load', function () {
+    const data = JSON.parse(this.responseText)
+    const secondURL = (data.abilities[0].ability.url);
+    const secondRequest = new XMLHttpRequest()
+    secondRequest.open('GET', secondURL);
+    secondRequest.send()
+    secondRequest.addEventListener('load', function () {
+        const data2 = JSON.parse(this.responseText)
+        const effect = data2.effect_entries;
+        console.log(effect);
 
-const ork = new Ork('Данила', 'Орк', 'Оркский', 'Секира');  // правильный порядок
-const elf = new Elf('Валерия', 'Эльф', 'Эльфийский', 'Заклинание любви');
+         for (let i = 0; i < effect.length; i++){
+             if (effect[i].language.name === 'en'){
+                console.log(effect[i].effect);
 
-console.log('=== Орк ===');
-ork.talk();
-ork.attack();
-console.log(ork);
+             }
+             else{
+                continue;
+             }
+         }
 
-console.log('\n=== Эльф ===');
-elf.talk();
-elf.createSpell();
-console.log(elf);
+    })
+})
 
