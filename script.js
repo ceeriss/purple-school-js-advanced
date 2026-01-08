@@ -1,30 +1,36 @@
-const request = new XMLHttpRequest()
+// Функция, возвращающая Promise с геолокацией
+function getCurrentLocationPromise() {
+    return new Promise((resolve, reject) => {
+        // Проверяем поддержку геолокации
+        if (!navigator.geolocation) {
+            reject(new Error('Геолокация не поддерживается вашим браузером'));
+            return;
+        }
 
-request.open('GET', 'https://pokeapi.co/api/v2/pokemon/ditto')
+        // Используем нативный API с колбэками
+        navigator.geolocation.getCurrentPosition(
+            // Успешный callback - резолвим промис
+            (position) => {
+                resolve(position);
+            },
+            // Ошибочный callback - реджектим промис
+            (error) => {
+                reject(new Error(getGeolocationError(error)));
+            }
+        );
+    });
+}
 
-request.send()
-
-request.addEventListener('load', function () {
-    const data = JSON.parse(this.responseText)
-    const secondURL = (data.abilities[0].ability.url);
-    const secondRequest = new XMLHttpRequest()
-    secondRequest.open('GET', secondURL);
-    secondRequest.send()
-    secondRequest.addEventListener('load', function () {
-        const data2 = JSON.parse(this.responseText)
-        const effect = data2.effect_entries;
-        console.log(effect);
-
-         for (let i = 0; i < effect.length; i++){
-             if (effect[i].language.name === 'en'){
-                console.log(effect[i].effect);
-
-             }
-             else{
-                continue;
-             }
-         }
-
-    })
-})
-
+// Вспомогательная функция для обработки ошибок геолокации
+function getGeolocationError(error) {
+    switch (error.code) {
+        case error.PERMISSION_DENIED:
+            return 'Пользователь отказал в доступе к геолокации';
+        case error.POSITION_UNAVAILABLE:
+            return 'Информация о местоположении недоступна';
+        case error.TIMEOUT:
+            return 'Время ожидания получения геолокации истекло';
+        default:
+            return 'Неизвестная ошибка геолокации';
+    }
+}
